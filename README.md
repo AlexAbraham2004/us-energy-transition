@@ -25,9 +25,49 @@ Date range: 1990–2024
 - Plotly
 - Dash
 
+## How to Run
+
+### 1. Install dependencies
+```
+pip install pandas plotly dash kaleido xlrd
+```
+
+### 2. Clean the data
+Run this first to generate the cleaned CSV from the raw EIA file:
+```
+python clean_energy_data.py
+```
+
+### 3. View individual charts
+Each chart can be run on its own and will open in your browser:
+```
+python charts/chart1_national_energy_mix.py
+python charts/chart2_energy_sources.py
+python charts/chart3_choropleth_map.py
+python charts/chart4_state_renewable_change.py
+```
+
+### 4. Generate the infographic
+This combines all 4 charts into a single static image (`infographic.png`):
+```
+python infographic.py
+```
+
+### 5. Run the dashboard
+```
+python dashboard.py
+```
+Then open your browser and go to `http://127.0.0.1:8050`
+
 ## Project Structure
 ```
 us-energy-transition/
+│
+├── charts/
+│   ├── chart1_national_energy_mix.py
+│   ├── chart2_energy_sources.py
+│   ├── chart3_choropleth_map.py
+│   └── chart4_state_renewable_change.py
 │
 ├── data/
 │   ├── raw/
@@ -36,9 +76,7 @@ us-energy-transition/
 │       └── cleaned_energy_data.csv
 │
 ├── clean_energy_data.py
-├── chart1_national_energy_mix.py
-├── chart2_energy_sources.py
-├── chart3_choropleth_map.py
-├── chart4_state_renewable_change.py
+├── infographic.py
+├── dashboard.py
 └── README.md
 ```
