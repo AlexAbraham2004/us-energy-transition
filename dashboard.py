@@ -36,6 +36,27 @@ SOURCE_COLORS = {
 }
 
 
+def _empty_figure(title: str, message: str) -> go.Figure:
+    fig = go.Figure()
+    fig.update_layout(
+        title=title,
+        plot_bgcolor="white",
+        paper_bgcolor="white",
+        margin=dict(l=45, r=25, t=60, b=45),
+    )
+    fig.add_annotation(
+        text=message,
+        x=0.5,
+        y=0.5,
+        xref="paper",
+        yref="paper",
+        showarrow=False,
+        font=dict(size=15, color="#4a5568"),
+        align="center",
+    )
+    return fig
+
+
 def _load_data() -> pd.DataFrame:
     df = pd.read_csv(DATA_PATH)
     return df
@@ -49,6 +70,11 @@ def _filter_states(df: pd.DataFrame, selected_states: list[str]) -> pd.DataFrame
 
 def build_mix_chart(df: pd.DataFrame, start_year: int, end_year: int) -> go.Figure:
     window = df[(df["year"] >= start_year) & (df["year"] <= end_year)]
+    if window.empty:
+        return _empty_figure(
+            "1) National/Selected-State Energy Mix Over Time",
+            "No data for selected filters.",
+        )
     grouped = window.groupby(["year", "category"])["generation_mwh"].sum().reset_index()
     pivot = grouped.pivot(index="year", columns="category", values="generation_mwh").fillna(0)
 
@@ -97,6 +123,8 @@ def build_source_chart(
         & (df["year"] <= end_year)
         & (df["energy_source"].isin(sources))
     ]
+    if window.empty:
+        return _empty_figure("2) Key Energy Sources Trend", "No data for selected filters.")
     grouped = window.groupby(["year", "energy_source"])["generation_mwh"].sum().reset_index()
     grouped["generation_twh"] = grouped["generation_mwh"] / 1e6
 
@@ -133,6 +161,11 @@ def build_source_chart(
 
 def build_map_chart(df: pd.DataFrame, map_year: int) -> go.Figure:
     year_df = df[df["year"] == map_year]
+    if year_df.empty:
+        return _empty_figure(
+            f"3) Renewable Share by State ({map_year})",
+            "No data for selected filters.",
+        )
     totals = year_df.groupby("state")["generation_mwh"].sum().rename("total_mwh")
     renewable = (
         year_df[year_df["category"] == "Renewable"]
@@ -142,6 +175,11 @@ def build_map_chart(df: pd.DataFrame, map_year: int) -> go.Figure:
     )
     merged = pd.concat([totals, renewable], axis=1).fillna(0).reset_index()
     merged = merged[merged["total_mwh"] > 0]
+    if merged.empty:
+        return _empty_figure(
+            f"3) Renewable Share by State ({map_year})",
+            "No data for selected filters.",
+        )
     merged["renewable_share"] = merged["renewable_mwh"] / merged["total_mwh"] * 100
 
     fig = go.Figure(
@@ -177,6 +215,11 @@ def build_change_chart(df: pd.DataFrame, baseline_year: int, comparison_year: in
     change = (comparison - baseline).reset_index()
     change.columns = ["state", "change"]
     change = change.dropna().sort_values("change", ascending=True)
+    if change.empty:
+        return _empty_figure(
+            f"4) Change in Renewable Share by State ({baseline_year} to {comparison_year})",
+            "No data for selected filters.",
+        )
     colors = ["#2ca02c" if value >= 0 else "#d62728" for value in change["change"]]
 
     fig = go.Figure(
