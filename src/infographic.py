@@ -1,6 +1,7 @@
 import pandas as pd
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
+from pathlib import Path
 
 from charts.chart1_national_energy_mix import create_chart as chart1
 from charts.chart2_energy_sources import create_chart as chart2
@@ -171,7 +172,9 @@ fig.add_annotation(
 )
 
 # Save as static image and open in browser
-fig.write_image("infographic.png", scale=2)
-print("Infographic saved as infographic.png")
+output_path = Path("outputs/infographic.png")
+output_path.parent.mkdir(parents=True, exist_ok=True)
+fig.write_image(output_path, scale=2)
+print(f"Infographic saved as {output_path}")
 
 fig.show()
