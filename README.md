@@ -27,6 +27,8 @@ Date range: 1990–2024
 
 ## How to Run
 
+Run all commands from the repository root (`us-energy-transition/`).
+
 ### 1. Install dependencies
 ```
 pip install pandas plotly dash kaleido xlrd
@@ -35,27 +37,27 @@ pip install pandas plotly dash kaleido xlrd
 ### 2. Clean the data
 Run this first to generate the cleaned CSV from the raw EIA file:
 ```
-python clean_energy_data.py
+python src/clean_energy_data.py
 ```
 
 ### 3. View individual charts
 Each chart can be run on its own and will open in your browser:
 ```
-python charts/chart1_national_energy_mix.py
-python charts/chart2_energy_sources.py
-python charts/chart3_choropleth_map.py
-python charts/chart4_state_renewable_change.py
+python src/charts/chart1_national_energy_mix.py
+python src/charts/chart2_energy_sources.py
+python src/charts/chart3_choropleth_map.py
+python src/charts/chart4_state_renewable_change.py
 ```
 
 ### 4. Generate the infographic
-This combines all 4 charts into a single static image (`infographic.png`):
+This combines all 4 charts into a single static image (`outputs/infographic.png`):
 ```
-python infographic.py
+python src/infographic.py
 ```
 
 ### 5. Run the dashboard
 ```
-python dashboard.py
+python src/dashboard.py
 ```
 Then open your browser and go to `http://127.0.0.1:8050`
 
@@ -63,20 +65,24 @@ Then open your browser and go to `http://127.0.0.1:8050`
 ```
 us-energy-transition/
 │
-├── charts/
-│   ├── chart1_national_energy_mix.py
-│   ├── chart2_energy_sources.py
-│   ├── chart3_choropleth_map.py
-│   └── chart4_state_renewable_change.py
-│
 ├── data/
 │   ├── raw/
 │   │   └── annual_generation_state.xls
 │   └── cleaned/
 │       └── cleaned_energy_data.csv
 │
-├── clean_energy_data.py
-├── infographic.py
-├── dashboard.py
+├── src/
+│   ├── charts/
+│   │   ├── chart1_national_energy_mix.py
+│   │   ├── chart2_energy_sources.py
+│   │   ├── chart3_choropleth_map.py
+│   │   └── chart4_state_renewable_change.py
+│   ├── clean_energy_data.py
+│   ├── dashboard.py
+│   └── infographic.py
+├── outputs/
+│   └── infographic.png
+├── docs/
+│   └── Final_Project_Proposal.pdf
 └── README.md
 ```
