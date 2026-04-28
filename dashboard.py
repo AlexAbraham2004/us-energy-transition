@@ -391,8 +391,8 @@ def update_dashboard(
 
     mix_fig = build_mix_chart(scope_df, start_year, end_year)
     source_fig = build_source_chart(scope_df, selected_sources, start_year, end_year)
-    map_fig = build_map_chart(df, map_year)
-    change_fig = build_change_chart(df, baseline_year, comparison_year)
+    map_fig = build_map_chart(scope_df, map_year)
+    change_fig = build_change_chart(scope_df, baseline_year, comparison_year)
     return mix_fig, source_fig, map_fig, change_fig, note
 
 
