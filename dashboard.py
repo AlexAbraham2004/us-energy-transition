@@ -103,11 +103,11 @@ def build_mix_chart(df: pd.DataFrame, start_year: int, end_year: int) -> go.Figu
         title="1) National/Selected-State Energy Mix Over Time",
         xaxis=dict(title="Year", tickmode="linear", dtick=5),
         yaxis=dict(title="Net Generation (TWh)"),
-        legend=dict(title="Category", orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        legend=dict(title="Category", orientation="h", yanchor="top", y=-0.3, xanchor="center", x=0.5),
         hovermode="x unified",
         plot_bgcolor="white",
         paper_bgcolor="white",
-        margin=dict(l=45, r=25, t=60, b=45),
+        margin=dict(l=45, r=25, t=60, b=120),
     )
     fig.update_xaxes(showgrid=True, gridcolor="#eeeeee")
     fig.update_yaxes(showgrid=True, gridcolor="#eeeeee")
@@ -148,11 +148,11 @@ def build_source_chart(
         title="2) Key Energy Sources Trend",
         xaxis=dict(title="Year", tickmode="linear", dtick=5),
         yaxis=dict(title="Net Generation (TWh)"),
-        legend=dict(title="Energy Source", orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        legend=dict(title="Energy Source", orientation="h", yanchor="top", y=-0.3, xanchor="center", x=0.5),
         hovermode="x unified",
         plot_bgcolor="white",
         paper_bgcolor="white",
-        margin=dict(l=45, r=25, t=60, b=45),
+        margin=dict(l=45, r=25, t=60, b=120),
     )
     fig.update_xaxes(showgrid=True, gridcolor="#eeeeee")
     fig.update_yaxes(showgrid=True, gridcolor="#eeeeee")
