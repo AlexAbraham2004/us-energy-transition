@@ -172,9 +172,6 @@ def _renewable_share(df: pd.DataFrame, year: int) -> pd.Series:
 
 
 def build_change_chart(df: pd.DataFrame, baseline_year: int, comparison_year: int) -> go.Figure:
-    if baseline_year >= comparison_year:
-        baseline_year, comparison_year = comparison_year - 1, comparison_year
-
     baseline = _renewable_share(df, baseline_year)
     comparison = _renewable_share(df, comparison_year)
     change = (comparison - baseline).reset_index()
@@ -387,12 +384,31 @@ def update_dashboard(
 
     note = ""
     if baseline_year >= comparison_year:
-        note = "Baseline year must be earlier than comparison year. Auto-adjusted internally."
+        note = "Baseline year must be earlier than comparison year."
 
     mix_fig = build_mix_chart(scope_df, start_year, end_year)
     source_fig = build_source_chart(scope_df, selected_sources, start_year, end_year)
     map_fig = build_map_chart(scope_df, map_year)
-    change_fig = build_change_chart(scope_df, baseline_year, comparison_year)
+    if baseline_year >= comparison_year:
+        change_fig = go.Figure()
+        change_fig.update_layout(
+            title=f"4) Change in Renewable Share by State ({baseline_year} to {comparison_year})",
+            plot_bgcolor="white",
+            paper_bgcolor="white",
+            margin=dict(l=55, r=25, t=60, b=45),
+        )
+        change_fig.add_annotation(
+            text="Choose a baseline year earlier than comparison year.",
+            x=0.5,
+            y=0.5,
+            xref="paper",
+            yref="paper",
+            showarrow=False,
+            font=dict(size=14, color="#4a5568"),
+            align="center",
+        )
+    else:
+        change_fig = build_change_chart(scope_df, baseline_year, comparison_year)
     return mix_fig, source_fig, map_fig, change_fig, note
 
 
