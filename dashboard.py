@@ -372,6 +372,24 @@ app.layout = html.Div(
             ],
         ),
         html.Div(
+            style={"display": "flex", "justifyContent": "flex-end", "marginBottom": "12px"},
+            children=[
+                html.Button(
+                    "Reset filters",
+                    id="reset-filters",
+                    n_clicks=0,
+                    style={
+                        "backgroundColor": "#2b6cb0",
+                        "color": "white",
+                        "border": "none",
+                        "padding": "8px 12px",
+                        "borderRadius": "6px",
+                        "cursor": "pointer",
+                    },
+                )
+            ],
+        ),
+        html.Div(
             id="validation-note",
             style={
                 "minHeight": "22px",
@@ -453,6 +471,20 @@ def update_dashboard(
     else:
         change_fig = build_change_chart(scope_df, baseline_year, comparison_year)
     return mix_fig, source_fig, map_fig, change_fig, note
+
+
+@app.callback(
+    Output("state-filter", "value"),
+    Output("source-filter", "value"),
+    Output("year-range", "value"),
+    Output("map-year", "value"),
+    Output("baseline-year", "value"),
+    Output("comparison-year", "value"),
+    Input("reset-filters", "n_clicks"),
+    prevent_initial_call=True,
+)
+def reset_filters(_: int):
+    return [], SOURCE_ORDER, [max(year_min, 1990), year_max], year_max, max(year_min, 2000), year_max
 
 
 if __name__ == "__main__":
