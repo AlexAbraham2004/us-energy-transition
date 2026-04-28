@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Load the raw Excel file (header is on row 2, so we skip the first row)
-df = pd.read_excel("annual_generation_state.xls", engine="xlrd", header=1)
+df = pd.read_excel("data/raw/annual_generation_state.xls", engine="xlrd", header=1)
 
 # We only want the total industry figures to avoid double counting across producer types
 df = df[df["TYPE OF PRODUCER"] == "Total Electric Power Industry"]
@@ -53,7 +53,7 @@ df["generation_mwh"] = df["generation_mwh"].clip(lower=0)
 df = df.reset_index(drop=True)
 
 # Save the cleaned data to a CSV
-df.to_csv("cleaned_energy_data.csv", index=False)
+df.to_csv("data/cleaned/cleaned_energy_data.csv", index=False)
 
 print(f"Shape: {df.shape}")
 print(f"Years: {df['year'].min()} to {df['year'].max()}")
